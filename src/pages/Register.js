@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "../util/hooks";
-//import { AuthContext } from "../context/Auth";
+import { AuthContext } from "../context/Auth";
 
 function Register(props) {
-  //const context = useContext(AuthContext);
+  const context = useContext(AuthContext);
   const initialState = {
     username: "",
     email: "",
@@ -14,8 +14,8 @@ function Register(props) {
   const { onChange, onSubmit, values } = useForm(registerUser, initialState);
   const [errors, setErrors] = useState([]);
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
-    update(_, result) {
-      // context.login(userData);
+    update(_, { data: { register: userData } }) {
+      context.login(userData);
       props.history.push("/");
     },
     onError(err) {

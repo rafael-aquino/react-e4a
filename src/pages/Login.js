@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "../util/hooks";
-//import { AuthContext } from "../context/Auth";
+import { AuthContext } from "../context/Auth";
 
 function Login(props) {
-  //const context = useContext(AuthContext);
+  const context = useContext(AuthContext);
   const initialState = {
     username: "",
     password: "",
@@ -15,8 +15,8 @@ function Login(props) {
   );
   const [errors, setErrors] = useState([]);
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(_, result) {
-      //context.login(userData);
+    update(_, { data: { login: userData } }) {
+      context.login(userData);
       props.history.push("/");
     },
     onError(err) {
