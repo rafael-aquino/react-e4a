@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery, gql } from "@apollo/client";
-
+import { AuthContext } from "../context/Auth";
+import PostForm from "../components/PostForm";
 function Home() {
+  const { user } = useContext(AuthContext);
   const { loading, data } = useQuery(FETCH_POST_QUERY);
   const likePost = () => {
     console.log("liked");
@@ -13,6 +15,11 @@ function Home() {
     const posts = data.getPosts;
     return (
       <div>
+        {user && (
+          <>
+            <PostForm />
+          </>
+        )}
         <ul>
           {posts &&
             posts.map((p) => (
