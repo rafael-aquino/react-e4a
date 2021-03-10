@@ -46,7 +46,7 @@ function Login(props) {
           onChange={onChange}
           value={values.password}
         />
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
       </form>
       <div>
         {Object.keys(errors).length > 0 && (

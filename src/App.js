@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AuthRoute from "./util/AuthRoute";
 import { AuthProvider } from "./context/Auth";
 import "./App.css";
 
@@ -13,8 +14,8 @@ function App() {
       <Router>
         <NavBar />
         <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
+        <AuthRoute exact path="/login" component={Login} />
+        <AuthRoute exact path="/register" component={Register} />
       </Router>
     </AuthProvider>
   );
