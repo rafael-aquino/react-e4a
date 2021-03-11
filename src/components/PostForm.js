@@ -9,10 +9,39 @@ function PostForm(props) {
 
   const [createPost] = useMutation(CREATE_POST_MUTATION, {
     variables: values,
-    update(_, result) {
-      console.log(result);
+    update(cache, { data: { createPost } }) {
+      cache.modify({
+        fields: {
+          getPosts(existingPosts = []) {
+            const newPostRef = cache.writeFragment({
+              data: createPost,
+              fragment: gql`
+                fragment NewPost on Posts {
+                  id
+                  body
+                  createdAt
+                  username
+                  likes {
+                    id
+                    username
+                    createdAt
+                  }
+                  comments {
+                    id
+                    body
+                    username
+                    createdAt
+                  }
+                }
+              `,
+            });
+            return [newPostRef, ...existingPosts];
+          },
+        },
+      });
     },
   });
+
   function createPostCallback() {
     createPost();
   }
