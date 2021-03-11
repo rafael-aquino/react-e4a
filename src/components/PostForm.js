@@ -7,9 +7,10 @@ function PostForm(props) {
     body: "",
   });
 
-  const [createPost] = useMutation(CREATE_POST_MUTATION, {
+  const [createPost, { error }] = useMutation(CREATE_POST_MUTATION, {
     variables: values,
     update(cache, { data: { createPost } }) {
+      values.body = "";
       cache.modify({
         fields: {
           getPosts(existingPosts = []) {
@@ -40,22 +41,28 @@ function PostForm(props) {
         },
       });
     },
+    onError(err) {
+      console.log(err);
+    },
   });
 
   function createPostCallback() {
     createPost();
   }
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        type="text"
-        name="body"
-        id="body"
-        onChange={onChange}
-        value={values.body}
-      />
-      <button type="submit">Post</button>
-    </form>
+    <>
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          name="body"
+          id="body"
+          onChange={onChange}
+          value={values.body}
+        />
+        <button type="submit">Post</button>
+      </form>
+      {error && <section>{error.graphQLErrors[0].message}</section>}
+    </>
   );
 }
 

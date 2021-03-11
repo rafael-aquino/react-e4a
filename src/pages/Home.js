@@ -2,13 +2,16 @@ import React, { useContext } from "react";
 import { useQuery, gql } from "@apollo/client";
 import { AuthContext } from "../context/Auth";
 import PostForm from "../components/PostForm";
+import { Link } from "react-router-dom";
 function Home() {
   const { user } = useContext(AuthContext);
   const { loading, data } = useQuery(FETCH_POST_QUERY);
   const likePost = () => {
     console.log("liked");
   };
-
+  const deletePost = () => {
+    console.log("deletePost");
+  };
   if (loading) {
     return <div>Loading...</div>;
   } else {
@@ -33,6 +36,12 @@ function Home() {
                 <p>{p.createdAt}</p>
                 <p>likes: {p.likes.length}</p>
                 <button onClick={likePost}>Like</button>
+                <p>
+                  <Link to={`/post/${p.id}`}>post</Link>
+                </p>
+                {user && user.username === p.username && (
+                  <button onClick={deletePost}>delete</button>
+                )}
               </li>
             ))}
         </ul>
